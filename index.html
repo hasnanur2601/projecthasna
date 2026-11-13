@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Aesthetic Study Planner & Pomodoro ✨</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #fcf6f5;
+            color: #5c4033;
+            font-family: 'Quicksand', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 520px;
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 30px;
+            box-shadow: 0 12px 35px rgba(255, 192, 203, 0.2);
+            border: 2px solid #ffe5ec;
+        }
+
+        h1 {
+            text-align: center;
+            color: #d87093;
+            margin-bottom: 5px;
+            font-size: 24px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #b5838d;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        /* Timer Section */
+        .timer-section {
+            background: #fff9fb;
+            border: 2px dashed #ffccd5;
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .mode-chips {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .chip {
+            background: #f8edeb;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #8d6b94;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .chip.active {
+            background: #ff85a1;
+            color: white;
+            box-shadow: 0 4px 10px rgba(255, 133, 161, 0.3);
+        }
+
+        #timer-status {
+            font-size: 14px;
+            color: #d87093;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        #time-display {
+            font-size: 48px;
+            font-weight: 700;
+            color: #6d597a;
+            letter-spacing: 2px;
+            margin: 10px 0;
+        }
+
+        .timer-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .btn-pastel-pink {
+            background-color: #ff85a1;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: 'Quicksand', sans-serif;
+            box-shadow: 0 4px 10px rgba(255, 133, 161, 0.3);
+        }
+
+        .btn-pastel-pink:hover { background-color: #ff6b8b; }
+
+        .btn-pastel-gray {
+            background-color: #f8edeb;
+            color: #8d6b94;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .btn-pastel-gray:hover { background-color: #fcd5ce; }
+
+        /* Schedule Generator Section */
+        .schedule-section h3 {
+            color: #d87093;
+            font-size: 16px;
+            margin-bottom: 12px;
+            border-bottom: 2px solid #ffe5ec;
+            padding-bottom: 5px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        input {
+            padding: 10px 14px;
+            border: 2px solid #ffccd5;
+            border-radius: 12px;
+            font-size: 13px;
+            font-family: 'Quicksand', sans-serif;
+            outline: none;
+            color: #5c4033;
+            background: #fff9fb;
+        }
+
+        #time-input { width: 105px; }
+        #activity-input { flex: 1; }
+
+        input:focus { border-color: #ff85a1; }
+
+        .schedule-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 160px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .schedule-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff0f3;
+            padding: 10px 14px;
+            border-radius: 14px;
+            border-left: 5px solid #ff85a1;
+            font-size: 13px;
+        }
+
+        .schedule-time {
+            font-weight: 700;
+            color: #b5838d;
+            font-size: 11px;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .schedule-text {
+            margin: 0;
+            font-weight: 600;
+            color: #5c4033;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+        .delete-btn:hover { opacity: 1; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <h1>🧸 Cozy Study Space 🌸</h1>
+    <div class="subtitle">Focus your mind, design your day. ✨</div>
+
+    <!-- Pomodoro Timer Box -->
+    <div class="timer-section">
+        <div class="mode-chips">
+            <button id="btn-focus" class="chip active" onclick="setTimerMode('focus')">Fokus 💻</button>
+            <button id="btn-short" class="chip" onclick="setTimerMode('shortBreak')">Rehat ☕</button>
+            <button id="btn-long" class="chip" onclick="setTimerMode('longBreak')">Santai 🌴</button>
+        </div>
+        <div id="timer-status">✨ Waktunya Fokus Belajar ✨</div>
+        <div id="time-display">25:00</div>
+        <div class="timer-buttons">
+            <button id="start-btn" class="btn-pastel-pink" onclick="toggleTimer()">Mulai 🚀</button>
+            <button class="btn-pastel-gray" onclick="resetTimer()">Reset 🔄</button>
+        </div>
+    </div>
+
+    <!-- Generator Jadwal Belajar -->
+    <div class="schedule-section">
+        <h3>📋 Generator Jadwal Harian</h3>
+        <div class="input-group">
+            <input type="text" id="time-input" placeholder="08:00 - 09:00">
+            <input type="text" id="activity-input" placeholder="Tulis aktivitas belajarmu...">
+            <button class="btn-pastel-pink" onclick="addScheduleItem()">➕</button>
+        </div>
+        <div id="schedule-container" class="schedule-list"></div>
+    </div>
+</div>
+
+<!-- Menghubungkan file eksternal -->
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
